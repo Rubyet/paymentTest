@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.boot.registry.selector.spi.DialectSelector;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -28,21 +29,25 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(nullable = false)
     private String cusomerName;
 
+    @Column(nullable = false)
     private Float Ammount;
 
     @Enumerated(EnumType.ORDINAL)
+    @Column(nullable = false)
     private PayMethod method;
 
+    @Column(nullable = false)
     private Status staus;
 
     @CreationTimestamp
-    @Column(name = "created_at")
+    @Column(name = "created_at",nullable = false,updatable = false)
     private Date createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updaed_at")
+    @Column(name = "updaed_at",nullable = false)
     private Date updatedAt;
 
     public enum PayMethod{
@@ -51,5 +56,13 @@ public class Payment {
 
     public enum Status{
         OPEN,PROCESSING,APPROVED,REJECTED
+    }
+
+    public PayMethod getMethod(){
+        return this.method;
+    }
+
+    public Status setStatus(Status status){
+        return this.staus = status;
     }
 }
